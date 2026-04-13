@@ -3,18 +3,22 @@
   "name": "flask-app-worker",
   "main": "index.js",
   "compatibility_date": "2026-04-09",
-  "containers": {
-    "CONTAINER_DO": {
+  "containers": [
+    {
+      "binding": "CONTAINER_DO",
       "class": "FlaskContainer",
       "image": {
         "context": "../flask_app",
         "dockerfile": "Dockerfile"
       }
     }
-  },
+  ],
   "durable_objects": {
-    "CONTAINER_DO": {
-      "class": "FlaskContainer"
-    }
+    "bindings": [
+      {
+        "name": "CONTAINER_DO",
+        "class": "FlaskContainer"
+      }
+    ]
   }
 }
