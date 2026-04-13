@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ course.title }} - 数据分析学习平台</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .course-detail {
+            background-color: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .course-detail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ff9a9e, #4ecdc4, #ffd93d);
+        }
+        
+        .course-header {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+        
+        .course-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .course-header:hover .course-image {
+            transform: scale(1.05);
+        }
+        
+        .course-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 40px;
+            color: white;
+        }
+        
+        .course-level {
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 1em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .course-title {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+        }
+        
+        .course-meta {
+            display: flex;
+            gap: 40px;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .meta-item::before {
+            margin-right: 10px;
+            font-size: 1.3em;
+        }
+        
+        .duration::before {
+            content: "⏱️";
+        }
+        
+        .modules::before {
+            content: "📚";
+        }
+        
+        .course-content {
+            padding: 40px;
+        }
+        
+        .section-title {
+            font-size: 2em;
+            margin-bottom: 25px;
+            color: #333;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .section-title::before {
+            content: '📌';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .course-description {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.8;
+            background-color: #f9f5ff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .modules-list {
+            margin-top: 30px;
+        }
+        
+        .module-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: #f9f5ff;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .module-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background: linear-gradient(180deg, #4ecdc4, #ff9a9e);
+        }
+        
+        .module-item:hover {
+            background-color: #f0f9ff;
+            transform: translateX(15px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        .module-number {
+            background: linear-gradient(135deg, #4ecdc4, #ff9a9e);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .module-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            flex: 1;
+        }
+        
+        .module-title a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.3s ease;
+        }
+        
+        .module-title a:hover {
+            color: #4ecdc4;
+        }
+        
+        .btn-back {
+            background-color: #6c757d;
+            margin-right: 15px;
+        }
+        
+        .btn-back:hover {
+            background-color: #5a6268;
+        }
+        
+        @media (max-width: 768px) {
+            .course-header {
+                height: 200px;
+            }
+            
+            .course-title {
+                font-size: 2em;
+            }
+            
+            .course-content {
+                padding: 25px;
+            }
+            
+            .course-meta {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .course-overlay {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="nav-menu">
+            <a href="{{ url_for('main.index') }}" class="nav-link">首页</a>
+            <a href="{{ url_for('main.courses') }}" class="nav-link active">课程列表</a>
+            <a href="{{ url_for('main.about') }}" class="nav-link">关于我们</a>
+        </nav>
+        
+        <div class="course-detail">
+            <div class="course-header">
+                <img src="{{ course.image }}" alt="{{ course.title }}" class="course-image">
+                <div class="course-overlay">
+                    {% if course.level == '基础' %}
+                    <span class="course-level level-basic">{{ course.level }}</span>
+                    {% elif course.level == '中级' %}
+                    <span class="course-level level-intermediate">{{ course.level }}</span>
+                    {% else %}
+                    <span class="course-level level-advanced">{{ course.level }}</span>
+                    {% endif %}
+                    <h1 class="course-title">{{ course.title }}</h1>
+                    <div class="course-meta">
+                        <span class="meta-item duration">{{ course.duration }}</span>
+                        <span class="meta-item modules">{{ course.modules|length }} 个模块</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="course-content">
+                <h2 class="section-title">课程介绍</h2>
+                <p class="course-description">{{ course.description }}</p>
+                
+                <h2 class="section-title">课程模块</h2>
+                <div class="modules-list">
+                    {% for module in course.modules %}
+                    <div class="module-item">
+                        <div class="module-number">{{ module.id }}</div>
+                        <div class="module-title"><a href="{{ url_for('main.module_detail', course_id=course.id, module_id=module.id) }}" style="text-decoration: none; color: inherit;">{{ module.title }}</a></div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div style="margin-top: 40px;">
+                    <a href="{{ url_for('main.courses') }}" class="btn btn-back">返回课程列表</a>
+                    <a href="#" class="btn">开始学习</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

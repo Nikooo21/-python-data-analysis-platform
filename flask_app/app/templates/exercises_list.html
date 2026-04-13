@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编程练习 - {{ module.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .exercises-list {
+            background-color: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .exercises-list::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ff9a9e, #4ecdc4, #ffd93d);
+        }
+        
+        .page-header {
+            background: linear-gradient(135deg, #4ecdc4, #ff9a9e);
+            padding: 40px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="2" fill="white" opacity="0.3"/></svg>');
+            animation: float 20s linear infinite;
+        }
+        
+        .page-title {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .breadcrumb {
+            font-size: 1.1em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .breadcrumb a {
+            color: white;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+        
+        .breadcrumb a:hover {
+            color: #ffd93d;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section-title {
+            font-size: 2em;
+            margin-bottom: 30px;
+            color: #333;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .section-title::before {
+            content: '💻';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .exercise-list {
+            margin-top: 30px;
+        }
+        
+        .exercise-item {
+            background-color: #f9f5ff;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .exercise-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background: linear-gradient(180deg, #4ecdc4, #ff9a9e);
+        }
+        
+        .exercise-item:hover {
+            transform: translateY(-8px) rotate(1deg);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+        
+        .exercise-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .exercise-icon {
+            font-size: 3em;
+            margin-right: 25px;
+            transition: transform 0.3s ease;
+        }
+        
+        .exercise-item:hover .exercise-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+        
+        .exercise-info {
+            flex: 1;
+        }
+        
+        .exercise-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .exercise-description {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 1.05em;
+            line-height: 1.6;
+        }
+        
+        .btn-back {
+            background-color: #6c757d;
+            margin-right: 15px;
+        }
+        
+        .btn-back:hover {
+            background-color: #5a6268;
+        }
+        
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 30px;
+            }
+            
+            .page-title {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 25px;
+            }
+            
+            .exercise-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .exercise-icon {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="nav-menu">
+            <a href="{{ url_for('main.index') }}" class="nav-link">首页</a>
+            <a href="{{ url_for('main.courses') }}" class="nav-link">课程列表</a>
+            <a href="{{ url_for('main.course_detail', course_id=course.id) }}" class="nav-link">{{ course.title }}</a>
+            <a href="{{ url_for('main.module_detail', course_id=course.id, module_id=module.id) }}" class="nav-link active">{{ module.title }}</a>
+        </nav>
+        
+        <div class="exercises-list">
+            <div class="page-header">
+                <div class="breadcrumb">
+                    <a href="{{ url_for('main.course_detail', course_id=course.id) }}">{{ course.title }}</a> &gt; 
+                    <a href="{{ url_for('main.module_detail', course_id=course.id, module_id=module.id) }}">{{ module.title }}</a> &gt; 
+                    编程练习
+                </div>
+                <h1 class="page-title">编程练习</h1>
+            </div>
+            
+            <div class="content">
+                <h2 class="section-title">练习列表</h2>
+                
+                <div class="exercise-list">
+                    {% for exercise in exercises %}
+                    <div class="exercise-item">
+                        <div class="exercise-header">
+                            <div class="exercise-icon">💻</div>
+                            <div class="exercise-info">
+                                <div class="exercise-title">{{ exercise.title }}</div>
+                            </div>
+                        </div>
+                        <div class="exercise-description">{{ exercise.description }}</div>
+                        <a href="{{ url_for('main.exercise_detail', course_id=course.id, module_id=module.id, exercise_id=exercise.id) }}" class="btn">开始练习</a>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div style="margin-top: 40px;">
+                    <a href="{{ url_for('main.module_detail', course_id=course.id, module_id=module.id) }}" class="btn btn-back">返回模块详情</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

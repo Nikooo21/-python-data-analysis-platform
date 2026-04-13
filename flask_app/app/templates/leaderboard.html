@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>排行榜</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+<body>
+    <div class="container">
+        <nav class="nav-menu">
+            <a href="{{ url_for('main.index') }}" class="nav-link">首页</a>
+            <a href="{{ url_for('main.courses') }}" class="nav-link">课程列表</a>
+            <a href="{{ url_for('main.achievements') }}" class="nav-link">我的成就</a>
+            <a href="{{ url_for('main.leaderboard') }}" class="nav-link active">排行榜</a>
+            <a href="{{ url_for('main.about') }}" class="nav-link">关于我们</a>
+        </nav>
+        
+        <div class="hero">
+            <h1>🏆 学习排行榜</h1>
+            <p>看看谁是数据分析学习的佼佼者</p>
+        </div>
+        
+        <div class="leaderboard">
+            <h2>🏅 积分排行榜</h2>
+            {% for user in leaderboard %}
+            <div class="leaderboard-item">
+                <div class="leaderboard-rank {% if loop.index == 1 %}rank-1{% elif loop.index == 2 %}rank-2{% elif loop.index == 3 %}rank-3{% endif %}">{{ loop.index }}</div>
+                <div class="leaderboard-avatar">👤</div>
+                <div class="leaderboard-info">
+                    <div class="leaderboard-name">{{ user.username }}</div>
+                    <div class="leaderboard-score">学习达人</div>
+                </div>
+                <div class="leaderboard-points">{{ user.score }} 分</div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <a href="{{ url_for('main.index') }}" class="btn">返回首页</a>
+    </div>
+</body>
+</html>

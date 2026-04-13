@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程列表 - 数据分析学习平台</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+<body>
+    <div class="container">
+        <nav class="nav-menu">
+            <a href="{{ url_for('main.index') }}" class="nav-link">首页</a>
+            <a href="{{ url_for('main.courses') }}" class="nav-link active">课程列表</a>
+            <a href="{{ url_for('main.about') }}" class="nav-link">关于我们</a>
+        </nav>
+        
+        <header>
+            <h1>🎓 数据分析课程</h1>
+            <p class="subtitle">从基础到进阶，全面掌握数据分析技能</p>
+        </header>
+        
+        <div class="course-grid">
+            {% for course in courses %}
+            <div class="course-card">
+                <img src="{{ course.image }}" alt="{{ course.title }}" class="course-image">
+                <div class="course-content">
+                    {% if course.level == '基础' %}
+                    <span class="course-level level-basic">{{ course.level }}</span>
+                    {% elif course.level == '中级' %}
+                    <span class="course-level level-intermediate">{{ course.level }}</span>
+                    {% else %}
+                    <span class="course-level level-advanced">{{ course.level }}</span>
+                    {% endif %}
+                    <h3>{{ course.title }}</h3>
+                    <p class="course-description">{{ course.description }}</p>
+                    <div class="course-meta">
+                        <span class="course-duration">{{ course.duration }}</span>
+                        <span>{{ course.modules|length }} 个模块</span>
+                    </div>
+                    <a href="{{ url_for('main.course_detail', course_id=course.id) }}" class="btn">查看详情</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

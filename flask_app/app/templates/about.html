@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们 - 数据分析学习平台</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .about-content {
+            background-color: white;
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .about-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ff9a9e, #4ecdc4, #ffd93d);
+        }
+        
+        h1 {
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            color: #333;
+            text-align: center;
+            border-bottom: 3px solid #4ecdc4;
+            padding-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            font-size: 2em;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            color: #333;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        h2::before {
+            content: '🌟';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        p {
+            margin-bottom: 20px;
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+        
+        .team {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .team-member {
+            text-align: center;
+            padding: 25px;
+            background-color: #f9f5ff;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .team-member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #4ecdc4, #ff9a9e);
+        }
+        
+        .team-member:hover {
+            transform: translateY(-8px) rotate(1deg);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+        
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #4ecdc4, #ff9a9e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .team-member:hover .team-avatar {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .team-name {
+            font-weight: bold;
+            font-size: 1.3em;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .team-role {
+            color: #666;
+            font-size: 1em;
+        }
+        
+        @media (max-width: 768px) {
+            .about-content {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 2.2em;
+            }
+            
+            h2 {
+                font-size: 1.6em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="nav-menu">
+            <a href="{{ url_for('main.index') }}" class="nav-link">首页</a>
+            <a href="{{ url_for('main.courses') }}" class="nav-link">课程列表</a>
+            <a href="{{ url_for('main.about') }}" class="nav-link active">关于我们</a>
+        </nav>
+        
+        <div class="about-content">
+            <h1>关于我们</h1>
+            
+            <p>数据分析学习平台是一个专为商务数据分析与应用专业学生设计的在线教育平台。我们致力于提供高质量的数据分析课程，帮助学生掌握实用的数据分析技能，提升就业竞争力。</p>
+            
+            <h2>我们的使命</h2>
+            <p>通过提供系统化、互动式的学习体验，让每个学生都能轻松掌握数据分析技能，为未来的职业发展打下坚实基础。</p>
+            
+            <h2>我们的特色</h2>
+            <p>• 完整的课程体系：从基础到进阶，覆盖数据分析的各个领域</p>
+            <p>• 互动式学习：学、练、测相结合，提高学习效果</p>
+            <p>• 成就激励系统：获得徽章和积分，提升学习动力</p>
+            <p>• 有趣童真的界面：让学习变得更加轻松愉快</p>
+            
+            <h2>我们的团队</h2>
+            <div class="team">
+                <div class="team-member">
+                    <div class="team-avatar">👨‍💻</div>
+                    <div class="team-name">张老师</div>
+                    <div class="team-role">数据分析专家</div>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">👩‍💻</div>
+                    <div class="team-name">李老师</div>
+                    <div class="team-role">Python开发工程师</div>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">🎨</div>
+                    <div class="team-name">王老师</div>
+                    <div class="team-role">UI/UX设计师</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

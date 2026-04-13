@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ module.title }} - {{ course.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .module-detail {
+            background-color: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .module-detail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ff9a9e, #4ecdc4, #ffd93d);
+        }
+        
+        .module-header {
+            background: linear-gradient(135deg, #4ecdc4, #ff9a9e);
+            padding: 40px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .module-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="2" fill="white" opacity="0.3"/></svg>');
+            animation: float 20s linear infinite;
+        }
+        
+        .module-title {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .course-info {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .module-content {
+            padding: 40px;
+        }
+        
+        .section-title {
+            font-size: 2em;
+            margin-bottom: 25px;
+            color: #333;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .section-title::before {
+            content: '📌';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .module-description {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.8;
+            background-color: #f9f5ff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .action-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .action-card {
+            background-color: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #4ecdc4, #ff9a9e);
+        }
+        
+        .action-card:hover {
+            transform: translateY(-10px) rotate(1deg);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+        
+        .action-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .action-card:hover .action-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+        
+        .action-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .action-description {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 1.05em;
+        }
+        
+        .btn-back {
+            background-color: #6c757d;
+            margin-right: 15px;
+        }
+        
+        .btn-back:hover {
+            background-color: #5a6268;
+        }
+        
+        @media (max-width: 768px) {
+            .module-header {
+                padding: 30px;
+            }
+            
+            .module-title {
+                font-size: 2em;
+            }
+            
+            .module-content {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="nav-menu">
+            <a href="{{ url_for('main.index') }}" class="nav-link">首页</a>
+            <a href="{{ url_for('main.courses') }}" class="nav-link">课程列表</a>
+            <a href="{{ url_for('main.course_detail', course_id=course.id) }}" class="nav-link active">{{ course.title }}</a>
+        </nav>
+        
+        <div class="module-detail">
+            <div class="module-header">
+                <div class="course-info">{{ course.title }}</div>
+                <h1 class="module-title">{{ module.title }}</h1>
+            </div>
+            
+            <div class="module-content">
+                <h2 class="section-title">模块介绍</h2>
+                <p class="module-description">{{ module.content }}</p>
+                
+                <div class="action-cards">
+                    <div class="action-card">
+                        <div class="action-icon">🎓</div>
+                        <h3 class="action-title">学习资源</h3>
+                        <p class="action-description">观看视频教程，学习核心概念和技能</p>
+                        <a href="{{ url_for('main.learning_resources', course_id=course.id, module_id=module.id) }}" class="btn">开始学习</a>
+                    </div>
+                    
+                    <div class="action-card">
+                        <div class="action-icon">💻</div>
+                        <h3 class="action-title">编程练习</h3>
+                        <p class="action-description">通过实际编程练习巩固所学知识</p>
+                        <a href="{{ url_for('main.exercises_list', course_id=course.id, module_id=module.id) }}" class="btn">开始练习</a>
+                    </div>
+                    
+                    <div class="action-card">
+                        <div class="action-icon">📝</div>
+                        <h3 class="action-title">测评测试</h3>
+                        <p class="action-description">通过选择题测评检验学习成果</p>
+                        <a href="{{ url_for('main.assessments_list', course_id=course.id, module_id=module.id) }}" class="btn">开始测评</a>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 40px;">
+                    <a href="{{ url_for('main.course_detail', course_id=course.id) }}" class="btn btn-back">返回课程详情</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

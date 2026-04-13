@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据分析学习平台 - 首页</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+<body>
+    <div class="container">
+        <nav class="nav-menu">
+            <a href="{{ url_for('main.index') }}" class="nav-link active">首页</a>
+            <a href="{{ url_for('main.courses') }}" class="nav-link">课程列表</a>
+            <a href="{{ url_for('main.achievements') }}" class="nav-link">我的成就</a>
+            <a href="{{ url_for('main.leaderboard') }}" class="nav-link">排行榜</a>
+            <a href="{{ url_for('main.about') }}" class="nav-link">关于我们</a>
+        </nav>
+        
+        <div class="hero">
+            <h1>🎉 数据分析学习平台</h1>
+            <p>从基础到进阶，轻松掌握数据分析技能</p>
+            <div>
+                <a href="{{ url_for('main.courses') }}" class="btn">浏览课程</a>
+                <a href="{{ url_for('main.about') }}" class="btn">了解更多</a>
+            </div>
+        </div>
+        
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3>完整课程体系</h3>
+                <p>从基础入门到高级应用，覆盖数据分析的各个领域</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>互动学习体验</h3>
+                <p>学、练、测相结合，提高学习效果</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h3>成就激励系统</h3>
+                <p>获得徽章和积分，提升学习动力</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

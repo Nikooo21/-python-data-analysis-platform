@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的成就</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .user-info {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            border-radius: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .user-info::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="2" fill="white" opacity="0.3"/></svg>');
+            animation: float 20s linear infinite;
+        }
+        
+        .user-info h2 {
+            margin: 0;
+            color: #333;
+            font-size: 2em;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .score {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #ffd93d;
+            margin-top: 15px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .badges-section {
+            margin-bottom: 40px;
+        }
+        
+        .badges-section h2 {
+            color: #333;
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .badges-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #ff9a9e, #4ecdc4);
+            border-radius: 2px;
+        }
+        
+        .badges-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .badge {
+            background-color: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #ff9a9e, #4ecdc4);
+        }
+        
+        .badge:hover {
+            transform: translateY(-8px) rotate(1deg);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+        
+        .badge-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+        
+        .badge:hover .badge-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+        
+        .badge-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .badge-description {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .progress-section {
+            margin-bottom: 40px;
+        }
+        
+        .progress-section h2 {
+            color: #333;
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .progress-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #4ecdc4, #ffd93d);
+            border-radius: 2px;
+        }
+        
+        .progress-item {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #6bcb77, #4ecdc4);
+        }
+        
+        .progress-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        .progress-item h3 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: #4ecdc4;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: #45b7aa;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="nav-menu">
+            <a href="{{ url_for('main.index') }}" class="nav-link">首页</a>
+            <a href="{{ url_for('main.courses') }}" class="nav-link">课程列表</a>
+            <a href="{{ url_for('main.achievements') }}" class="nav-link active">我的成就</a>
+            <a href="{{ url_for('main.leaderboard') }}" class="nav-link">排行榜</a>
+            <a href="{{ url_for('main.about') }}" class="nav-link">关于我们</a>
+        </nav>
+        
+        <div class="hero">
+            <h1>🏅 我的成就</h1>
+            <p>记录你的学习旅程和成长足迹</p>
+        </div>
+        
+        <div class="user-info">
+            <h2>{{ user.username }}</h2>
+            <div class="score">积分: {{ user.score }}</div>
+        </div>
+        
+        <div class="badges-section">
+            <h2>我的徽章</h2>
+            <div class="badges-container">
+                {% for badge in badges %}
+                <div class="badge">
+                    <div class="badge-icon">{{ badge.icon }}</div>
+                    <div class="badge-name">{{ badge.name }}</div>
+                    <div class="badge-description">{{ badge.description }}</div>
+                </div>
+                {% else %}
+                <p>还没有获得任何徽章，继续努力吧！</p>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="progress-section">
+            <h2>学习进度</h2>
+            {% for module, assessments in progress.items() %}
+            <div class="progress-item">
+                <h3>模块: {{ module }}</h3>
+                <p>完成测评数: {{ assessments|length }}</p>
+            </div>
+            {% else %}
+            <p>还没有完成任何测评，开始学习吧！</p>
+            {% endfor %}
+        </div>
+        
+        <a href="{{ url_for('main.index') }}" class="btn">返回首页</a>
+    </div>
+</body>
+</html>
