@@ -1,24 +1,18 @@
 {
   "$schema": "https://schemas.cloudflare.com/wrangler/v3.json",
-  "name": "flask-app-worker",
+  "name": "ai-api-proxy",
   "main": "index.js",
-  "compatibility_date": "2026-04-09",
-  "containers": [
+  "compatibility_date": "2026-04-16",
+  "vars": {
+    "CLOUDFLARE_ACCOUNT_ID": "your-cloudflare-account-id",
+    "AI_GATEWAY_NAME": "your-ai-gateway-name",
+    "AI_API_KEY": "your-ai-api-key"
+  },
+  "kv_namespaces": [
     {
-      "binding": "CONTAINER_DO",
-      "class": "FlaskContainer",
-      "image": {
-        "context": "../flask_app",
-        "dockerfile": "Dockerfile"
-      }
+      "binding": "PROJECT_DATA",
+      "id": "dev-project-data",
+      "preview_id": "dev-project-data-preview"
     }
-  ],
-  "durable_objects": {
-    "bindings": [
-      {
-        "name": "CONTAINER_DO",
-        "class": "FlaskContainer"
-      }
-    ]
-  }
+  ]
 }
