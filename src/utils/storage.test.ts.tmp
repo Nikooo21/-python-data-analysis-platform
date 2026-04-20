@@ -1,0 +1,109 @@
+import { 
+  saveProjectProgress, 
+  getProjectProgress, 
+  getAllProgress, 
+  clearAllProgress, 
+  testStoragePersistence, 
+  ProjectProgress 
+} from './storage';
+
+// 模拟localStorage
+const mockLocalStorage = (() => {
+  let store: Record<string, string> = {};
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => {
+      store[key] = value.toString();
+    },
+    removeItem: (key: string) => {
+      delete store[key];
+    },
+    clear: () => {
+      store = {};
+    }
+  };
+})();
+
+// 替换全局localStorage
+Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+
+describe('LocalStorage封装测试', () => {
+  beforeEach(() => {
+    // 测试前清除存储
+    clearAllProgress();
+  });
+
+  test('保存和获取单个项目进度', () => {
+    const projectId = 'project-1';
+    const progress = {
+      code: 'import pandas as pd\ndf = pd.DataFrame()',
+      completed: true
+    };
+
+    // 保存进度
+    saveProjectProgress(projectId, progress);
+
+    // 获取进度
+    const savedProgress = getProjectProgress(projectId);
+
+    expect(savedProgress.code).toBe(progress.code);
+    expect(savedProgress.completed).toBe(progress.completed);
+    expect(savedProgress.lastUpdated).toBeGreaterThan(0);
+  });
+
+  test('获取不存在项目的进度', () => {
+    const projectId = 'non-existent-project';
+    const progress = getProjectProgress(projectId);
+
+    expect(progress.code).toBe('');
+    expect(progress.completed).toBe(false);
+    expect(progress.lastUpdated).toBe(0);
+  });
+
+  test('获取所有项目进度', () => {
+    // 保存两个项目的进度
+    saveProjectProgress('project-1', {
+      code: 'print("Project 1")',
+      completed: true
+    });
+
+    saveProjectProgress('project-2', {
+      code: 'print("Project 2")',
+      completed: false
+    });
+
+    // 获取所有进度
+    const allProgress = getAllProgress();
+
+    expect(Object.keys(allProgress)).toHaveLength(2);
+    expect(allProgress['project-1'].completed).toBe(true);
+    expect(allProgress['project-2'].completed).toBe(false);
+  });
+
+  test('清除所有进度', () => {
+    // 保存测试数据
+    saveProjectProgress('project-1', {
+      code: 'print("Test")',
+      completed: true
+    });
+
+    // 清除所有进度
+    clearAllProgress();
+
+    // 验证已清除
+    const allProgress = getAllProgress();
+    expect(Object.keys(allProgress)).toHaveLength(0);
+
+    const progress = getProjectProgress('project-1');
+    expect(progress.code).toBe('');
+    expect(progress.completed).toBe(false);
+  });
+
+  test('测试数据持久化', () => {
+    const result = testStoragePersistence();
+    expect(result.success).toBe(true);
+    expect(result.savedData.code).toBe(result.testData.code);
+    expect(result.savedData.completed).toBe(result.testData.completed);
+    expect(result.savedData.lastUpdated).toBeGreaterThan(0);
+  });
+});
